@@ -1,0 +1,15 @@
+industry:
+  - SaaS
+  - AI
+
+company_size:
+  min: 50
+  max: 1000
+
+locations:
+  - USA
+  - India
+
+technologies:
+  - AWS
+  - Azure
