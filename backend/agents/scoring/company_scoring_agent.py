@@ -1,8 +1,7 @@
 """
-Trigger Monitor Agent
+Company Scoring Agent
 
-Monitors trigger sources and stores detected events
-inside the AgentContext.
+Assigns priority scores to qualified companies.
 """
 
 from __future__ import annotations
@@ -12,12 +11,9 @@ from backend.agents.base.agent_context import AgentContext
 from backend.tools.base.tool_registry import tool_registry
 
 
-class TriggerMonitorAgent(BaseAgent):
-    """
-    Detects trigger events.
-    """
+class CompanyScoringAgent(BaseAgent):
 
-    capability = "trigger_monitor"
+    capability = "company_scoring"
 
     def validate(
         self,
@@ -32,13 +28,12 @@ class TriggerMonitorAgent(BaseAgent):
         context: AgentContext,
     ) -> AgentContext:
 
-        provider = tool_registry.get("google_news")
+        provider = tool_registry.get("score")
 
-        trigger_events = provider.execute()
-
-        context.set_metadata(
-            "trigger_events",
-            trigger_events,
+        scored = provider.execute(
+            context.qualified_companies
         )
+
+        context.scored_companies = scored
 
         return context
