@@ -3,6 +3,10 @@ from agents.base.agent_registry import AgentRegistry
 from agents.discovery.trigger_monitor_agent import TriggerMonitorAgent
 from agents.discovery.company_discovery_agent import CompanyDiscoveryAgent
 from agents.discovery.market_signal_agent import MarketSignalAgent
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 
 
 def main():

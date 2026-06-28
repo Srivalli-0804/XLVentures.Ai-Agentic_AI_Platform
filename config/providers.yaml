@@ -1,0 +1,72 @@
+# ==========================================================
+# External Provider Configuration
+# ==========================================================
+
+providers:
+
+  google_news:
+
+    enabled: true
+    priority: 1
+    base_url: "https://news.google.com"
+    timeout: 10
+
+  serper:
+
+    enabled: true
+    priority: 2
+    base_url: "https://google.serper.dev"
+    timeout: 15
+
+  crunchbase:
+
+    enabled: true
+    priority: 1
+    base_url: "https://api.crunchbase.com"
+    timeout: 20
+
+  proxycurl:
+
+    enabled: true
+    priority: 1
+    base_url: "https://nubela.co/proxycurl"
+    timeout: 20
+
+  hunter:
+
+    enabled: true
+    priority: 1
+    base_url: "https://api.hunter.io"
+    timeout: 15
+
+  apollo:
+
+    enabled: true
+    priority: 2
+    base_url: "https://api.apollo.io"
+    timeout: 20
+
+  people_data_labs:
+
+    enabled: true
+    priority: 1
+    base_url: "https://api.peopledatalabs.com"
+    timeout: 20
+
+defaults:
+
+  retries: 3
+
+  retry_delay_seconds: 2
+
+  request_timeout_seconds: 20
+
+  cache_results: true
+
+  cache_duration_hours: 24
+
+rate_limits:
+
+  requests_per_minute: 60
+
+  concurrent_requests: 5

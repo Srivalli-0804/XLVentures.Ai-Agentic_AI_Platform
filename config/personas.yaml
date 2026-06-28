@@ -1,0 +1,58 @@
+# ==========================================================
+# Target Buyer Personas
+# ==========================================================
+
+personas:
+
+  executive:
+
+    - CEO
+    - Founder
+    - Co-Founder
+    - Managing Director
+    - President
+
+  technology:
+
+    - CTO
+    - VP Engineering
+    - Director of Engineering
+    - Head of Engineering
+    - Engineering Manager
+
+  human_resources:
+
+    - CHRO
+    - VP HR
+    - HR Director
+    - Head of HR
+    - Talent Acquisition Manager
+
+  sales:
+
+    - Chief Revenue Officer
+    - VP Sales
+    - Director of Sales
+    - Sales Manager
+
+  operations:
+
+    - COO
+    - Operations Director
+    - Head of Operations
+
+contact_preferences:
+
+  required_fields:
+
+    - full_name
+    - designation
+    - company
+    - linkedin
+    - email
+
+  optional_fields:
+
+    - phone
+    - location
+    - experience

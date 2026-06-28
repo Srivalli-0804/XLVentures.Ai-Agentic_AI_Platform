@@ -1,0 +1,62 @@
+# ==========================================================
+# Ideal Customer Profile (ICP)
+# ==========================================================
+
+name: "B2B SaaS Growth Companies"
+
+industry:
+  - SaaS
+  - Artificial Intelligence
+  - Cloud Computing
+  - FinTech
+
+company_size:
+
+  minimum_employees: 100
+
+  maximum_employees: 1000
+
+revenue:
+
+  minimum_usd: 10000000
+
+  maximum_usd: 500000000
+
+locations:
+
+  - United States
+  - Canada
+  - United Kingdom
+  - Germany
+  - Netherlands
+
+funding:
+
+  minimum_stage: "Series A"
+
+  preferred_stages:
+    - Series B
+    - Series C
+    - Series D
+
+technology_preferences:
+
+  - AWS
+  - Azure
+  - Google Cloud
+  - Kubernetes
+  - Docker
+
+exclude_industries:
+
+  - Government
+  - Education
+  - Non-Profit
+
+priority_signals:
+
+  - Funding Round
+  - Hiring Spike
+  - Product Launch
+  - Office Expansion
+  - New Partnership

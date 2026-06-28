@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 import asyncio
 
 from agents.base.agent_context import AgentContext
@@ -11,6 +15,7 @@ from agents.discovery.market_signal_agent import MarketSignalAgent
 from agents.planner.execution_engine import ExecutionEngine
 from agents.planner.execution_plan import ExecutionPlan
 from agents.planner.workflow_models import WorkflowNode
+
 
 
 async def main():

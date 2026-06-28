@@ -1,0 +1,90 @@
+# ==========================================================
+# Business Trigger Configuration
+# ==========================================================
+
+triggers:
+
+  funding:
+
+    enabled: true
+
+    events:
+      - Seed Funding
+      - Series A
+      - Series B
+      - Series C
+      - Series D
+      - Venture Capital Investment
+
+  hiring:
+
+    enabled: true
+
+    events:
+      - Hiring Spike
+      - Engineering Hiring
+      - Sales Hiring
+      - Executive Hiring
+
+  expansion:
+
+    enabled: true
+
+    events:
+      - Office Expansion
+      - New Country Expansion
+      - New Regional Office
+      - International Growth
+
+  product:
+
+    enabled: true
+
+    events:
+      - Product Launch
+      - Feature Release
+      - Platform Upgrade
+      - AI Product Announcement
+
+  partnership:
+
+    enabled: true
+
+    events:
+      - Strategic Partnership
+      - Technology Partnership
+      - Channel Partnership
+
+  acquisition:
+
+    enabled: true
+
+    events:
+      - Acquisition
+      - Merger
+      - Company Purchase
+
+  leadership:
+
+    enabled: true
+
+    events:
+      - CEO Appointment
+      - CTO Appointment
+      - Executive Leadership Change
+
+settings:
+
+  monitor_frequency: "daily"
+
+  maximum_events_per_company: 10
+
+  event_retention_days: 90
+
+  priority_events:
+
+    - Series B
+    - Series C
+    - Hiring Spike
+    - Product Launch
+    - Office Expansion

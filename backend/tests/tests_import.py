@@ -1,3 +1,7 @@
+import sys
+from pathlib import Path
+
+sys.path.append(str(Path(__file__).resolve().parent.parent))
 print("=" * 60)
 print("Testing Base Layer")
 print("=" * 60)
@@ -6,6 +10,7 @@ from agents.base.base_agent import BaseAgent
 from agents.base.agent_context import AgentContext
 from agents.base.agent_registry import AgentRegistry
 from agents.base.capability_router import CapabilityRouter
+
 
 print("✓ Base Layer Imported")
 
