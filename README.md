@@ -1,5 +1,12 @@
 # Agentic AI Platform for B2B Customer Discovery
 
+# TEAM DETAILS
+TEAM NAME : Eclipse
+TEAM MEMBERS : Srija, Abhisree, Srivalli
+
+# GITHUB REPOSITORY LINK
+https://github.com/Srivalli-0804/XLVentures.Ai-Agentic_AI_Platform/tree/final
+
 ## Overview
 This project is a reusable Agentic AI Platform for B2B customer discovery and prospect intelligence. It combines a frontend dashboard with a backend orchestration engine that uses AI-style agents, workflow queuing, shared memory, and human approval.
 
