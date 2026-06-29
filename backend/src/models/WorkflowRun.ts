@@ -7,6 +7,7 @@ export interface WorkflowRunDocument extends Document {
   requestedBy?: string;
   requiresApproval?: boolean;
   outputPayload?: Record<string, unknown>;
+  goal?: string;
   steps: Array<{ agent: string; status: string; message?: string }>;
   createdAt: Date;
   updatedAt: Date;
@@ -16,6 +17,7 @@ const workflowRunSchema = new Schema<WorkflowRunDocument>(
   {
     name: { type: String, required: true },
     status: { type: String, required: true, default: 'pending' },
+    goal: { type: String },
     jobId: { type: String },
     requestedBy: { type: String },
     requiresApproval: { type: Boolean, default: true },

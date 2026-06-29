@@ -21,3 +21,18 @@ export const approveWorkflow = async (req: Request, res: Response, next: NextFun
     next(error);
   }
 };
+
+export const deleteWorkflow = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { workflowId } = req.params;
+    const workflow = await WorkflowRunModel.findByIdAndDelete(workflowId);
+
+    if (!workflow) {
+      return res.status(404).json({ message: 'Workflow not found' });
+    }
+
+    res.json({ success: true });
+  } catch (error) {
+    next(error);
+  }
+};

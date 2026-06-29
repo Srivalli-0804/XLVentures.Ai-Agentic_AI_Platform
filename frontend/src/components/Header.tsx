@@ -12,7 +12,7 @@ export function Header() {
           <p className="text-sm text-slate-400">B2B prospect intelligence orchestration</p>
         </div>
 
-        <nav className="flex items-center gap-4 text-slate-300">
+        <nav className="flex flex-wrap items-center gap-4 text-slate-300">
           <NavLink to="/" className="hover:text-white" end>
             Dashboard
           </NavLink>
@@ -25,8 +25,14 @@ export function Header() {
           <NavLink to="/planner" className="hover:text-white">
             Planner
           </NavLink>
+          <NavLink to="/builder" className="hover:text-white">
+            Builder
+          </NavLink>
           <NavLink to="/approvals" className="hover:text-white">
             Approvals
+          </NavLink>
+          <NavLink to="/profile" className="hover:text-white">
+            Profile
           </NavLink>
           <NavLink to="/settings" className="hover:text-white">
             Settings

@@ -44,6 +44,7 @@ export type WorkflowRun = {
   _id: string;
   name: string;
   status: string;
+  goal?: string;
   steps: Array<{ agent: string; status: string; message?: string }>;
   createdAt: string;
 };
@@ -65,6 +66,7 @@ export type AgentInfo = {
 export type WorkflowQueueResponse = {
   jobId: string;
   workflowId: string;
+  goal: string;
 };
 
 export type UserProfile = {
@@ -79,6 +81,11 @@ export const fetchWorkflowStatus = async (): Promise<WorkflowRun[]> => {
 
 export const approveWorkflow = async (workflowId: string, action: 'approve' | 'reject') => {
   const response = await api.post('/workflow/approve', { workflowId, action });
+  return response.data;
+};
+
+export const deleteWorkflow = async (workflowId: string) => {
+  const response = await api.delete(`/workflow/approve/${workflowId}`);
   return response.data;
 };
 

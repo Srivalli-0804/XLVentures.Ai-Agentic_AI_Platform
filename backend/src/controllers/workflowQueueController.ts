@@ -9,6 +9,7 @@ export const enqueueWorkflow = async (req: Request, res: Response, next: NextFun
     const workflowRun = await WorkflowRunModel.create({
       name: `workflow-${Date.now()}`,
       status: 'pending',
+      goal,
       requestedBy: userId,
       requiresApproval: true,
       steps: []
@@ -18,8 +19,11 @@ export const enqueueWorkflow = async (req: Request, res: Response, next: NextFun
     workflowRun.jobId = String(job.id);
     await workflowRun.save();
 
-    res.json({ jobId: job.id, workflowId: workflowRun.id, status: 'queued' });
+    res.json({ jobId: job.id, workflowId: workflowRun.id, goal, status: 'queued' });
   } catch (error) {
+    if (error instanceof Error) {
+      return res.status(503).json({ message: `Unable to queue workflow: ${error.message}` });
+    }
     next(error);
   }
 };

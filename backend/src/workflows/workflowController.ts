@@ -13,6 +13,7 @@ export const runWorkflow = async (req: Request, res: Response, next: NextFunctio
     const existingRun = await WorkflowRunModel.create({
       name: `workflow-${Date.now()}`,
       status: 'running',
+      goal,
       steps: []
     });
 

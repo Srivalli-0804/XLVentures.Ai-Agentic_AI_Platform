@@ -1,9 +1,12 @@
 import { Link } from 'react-router-dom';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { Company, fetchCompanies, queueWorkflow, WorkflowQueueResponse } from '../services/api';
 
 export function CompanyResultsPage() {
   const queryClient = useQueryClient();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { data } = useQuery<Company[]>({
     queryKey: ['companies'],
     queryFn: fetchCompanies,
@@ -12,7 +15,15 @@ export function CompanyResultsPage() {
 
   const mutation = useMutation<WorkflowQueueResponse, unknown, { goal: string }>({
     mutationFn: ({ goal }) => queueWorkflow(goal),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['workflowStatus'] })
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['workflowStatus'] });
+      setErrorMessage(null);
+    },
+    onError: (error: unknown) => {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const apiMessage = axiosError.response?.data?.message;
+      setErrorMessage(apiMessage ?? 'Unable to queue discovery run. Check your permissions.');
+    }
   });
 
   return (
@@ -34,8 +45,8 @@ export function CompanyResultsPage() {
         {mutation.isSuccess && (
           <p className="mt-4 text-sm text-emerald-300">Discovery workflow queued successfully.</p>
         )}
-        {mutation.isError && (
-          <p className="mt-4 text-sm text-rose-300">Unable to queue discovery run. Check your permissions.</p>
+        {errorMessage && (
+          <p className="mt-4 text-sm text-rose-300">{errorMessage}</p>
         )}
       </div>
 

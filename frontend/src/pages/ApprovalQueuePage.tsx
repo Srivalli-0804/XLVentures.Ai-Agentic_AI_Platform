@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { fetchWorkflowStatus, approveWorkflow, WorkflowRun } from '../services/api';
+import { fetchWorkflowStatus, approveWorkflow, deleteWorkflow, WorkflowRun } from '../services/api';
 import { useAuthStore } from '../store/authStore';
 
 export function ApprovalQueuePage() {
@@ -8,6 +8,10 @@ export function ApprovalQueuePage() {
   const { data: runs } = useQuery<WorkflowRun[]>({ queryKey: ['workflowStatus'], queryFn: fetchWorkflowStatus, staleTime: 1000 * 30 });
   const approveMutation = useMutation({
     mutationFn: ({ workflowId, action }: { workflowId: string; action: 'approve' | 'reject' }) => approveWorkflow(workflowId, action),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['workflowStatus'] })
+  });
+  const deleteMutation = useMutation({
+    mutationFn: (workflowId: string) => deleteWorkflow(workflowId),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ['workflowStatus'] })
   });
 
@@ -27,22 +31,35 @@ export function ApprovalQueuePage() {
               <div>
                 <p className="font-semibold text-white">{run.name}</p>
                 <p className="text-sm text-slate-400">Status: {run.status}</p>
+                {run.goal && <p className="mt-1 text-sm text-slate-400">Goal: {run.goal}</p>}
               </div>
               {role === 'admin' ? (
-                <div className="flex gap-2">
+                <div className="flex flex-col gap-2 sm:flex-row">
+                  <div className="flex gap-2">
+                    <button
+                      disabled={run.status !== 'pendingApproval'}
+                      className="rounded-3xl bg-brand-500 px-5 py-3 text-white transition hover:bg-brand-400 disabled:opacity-50"
+                      onClick={() => approveMutation.mutate({ workflowId: run._id, action: 'approve' })}
+                    >
+                      Approve
+                    </button>
+                    <button
+                      disabled={run.status !== 'pendingApproval'}
+                      className="rounded-3xl bg-slate-700 px-5 py-3 text-white transition hover:bg-slate-600 disabled:opacity-50"
+                      onClick={() => approveMutation.mutate({ workflowId: run._id, action: 'reject' })}
+                    >
+                      Reject
+                    </button>
+                  </div>
                   <button
-                    disabled={run.status !== 'pendingApproval'}
-                    className="rounded-3xl bg-brand-500 px-5 py-3 text-white transition hover:bg-brand-400 disabled:opacity-50"
-                    onClick={() => approveMutation.mutate({ workflowId: run._id, action: 'approve' })}
+                    className="rounded-3xl bg-red-600 px-5 py-3 text-white transition hover:bg-red-500"
+                    onClick={() => {
+                      if (window.confirm('Delete this workflow? This action cannot be undone.')) {
+                        deleteMutation.mutate(run._id);
+                      }
+                    }}
                   >
-                    Approve
-                  </button>
-                  <button
-                    disabled={run.status !== 'pendingApproval'}
-                    className="rounded-3xl bg-slate-700 px-5 py-3 text-white transition hover:bg-slate-600 disabled:opacity-50"
-                    onClick={() => approveMutation.mutate({ workflowId: run._id, action: 'reject' })}
-                  >
-                    Reject
+                    Delete
                   </button>
                 </div>
               ) : (

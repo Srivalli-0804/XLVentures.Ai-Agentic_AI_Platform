@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
 import { fetchDashboardStats, DashboardStats } from '../services/api';
-import { PageTabs } from '../components/PageTabs';
 
 export function DashboardPage() {
   const { data } = useQuery<DashboardStats>({
@@ -18,7 +17,6 @@ export function DashboardPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <PageTabs />
       <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6 shadow-xl shadow-slate-950/20">
         <div className="flex items-center justify-between gap-4">
           <div>
@@ -37,7 +35,7 @@ export function DashboardPage() {
         </div>
       </section>
 
-      <section className="grid gap-6 xl:grid-cols-3">
+      <section className="grid gap-6 xl:grid-cols-2">
         <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6">
           <p className="text-sm uppercase text-slate-400">Planner status</p>
           <div className="mt-6 space-y-4">
@@ -57,18 +55,6 @@ export function DashboardPage() {
                 <p className="text-sm text-slate-400">{work.status}</p>
               </div>
             ))}
-          </div>
-        </div>
-
-        <div className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6">
-          <p className="text-sm uppercase text-slate-400">Quick actions</p>
-          <div className="mt-6 space-y-3">
-            <button className="w-full rounded-3xl bg-brand-500 px-5 py-3 text-left font-semibold text-white transition hover:bg-brand-400">
-              Launch new workflow
-            </button>
-            <button className="w-full rounded-3xl border border-slate-700 px-5 py-3 text-left text-slate-200 transition hover:border-slate-500">
-              Review approval queue
-            </button>
           </div>
         </div>
       </section>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { loginRequest } from '../services/api';
 import { useAuthStore } from '../store/authStore';
 
@@ -7,6 +8,7 @@ export function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const setAuth = useAuthStore((state) => state.setAuth);
+  const navigate = useNavigate();
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -14,6 +16,7 @@ export function LoginPage() {
       const result = await loginRequest(email, password);
       setAuth(result.token, result.user.email, result.user.role);
       setError(null);
+      navigate('/', { replace: true });
     } catch (err) {
       setError('Login failed. Check credentials.');
     }

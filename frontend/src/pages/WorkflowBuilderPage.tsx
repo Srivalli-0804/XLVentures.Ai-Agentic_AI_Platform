@@ -1,17 +1,26 @@
 import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
+import { AxiosError } from 'axios';
 import { queueWorkflow, WorkflowQueueResponse } from '../services/api';
 import { useAuthStore } from '../store/authStore';
-import { PageTabs } from '../components/PageTabs';
 
 export function WorkflowBuilderPage() {
   const [goal, setGoal] = useState('Find SaaS companies hiring AI engineers');
   const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<'success' | 'error' | null>(null);
   const { role } = useAuthStore();
   const mutation = useMutation<WorkflowQueueResponse, unknown, { goal: string }>({
     mutationFn: ({ goal }) => queueWorkflow(goal),
-    onSuccess: (data) => setMessage(`Workflow queued with job ${data.jobId} and workflow ${data.workflowId}`),
-    onError: () => setMessage('Unable to queue workflow. Check permissions.')
+    onSuccess: (data) => {
+      setMessageType('success');
+      setMessage(`Workflow queued with job ${data.jobId} and workflow ${data.workflowId}`);
+    },
+    onError: (error: unknown) => {
+      const axiosError = error as AxiosError<{ message: string }>;
+      const apiMessage = axiosError.response?.data?.message;
+      setMessageType('error');
+      setMessage(apiMessage ?? 'Unable to queue workflow. Check permissions.');
+    }
   });
 
   const canQueue = role === 'admin' || role === 'sales';
@@ -23,7 +32,6 @@ export function WorkflowBuilderPage() {
 
   return (
     <div className="mx-auto max-w-7xl space-y-6">
-      <PageTabs />
       <section className="rounded-3xl border border-slate-800 bg-slate-900/80 p-6">
         <div>
           <p className="text-sm uppercase text-slate-400">Workflow builder</p>
@@ -49,7 +57,9 @@ export function WorkflowBuilderPage() {
           {!canQueue && (
             <p className="text-sm text-yellow-300">Only admin and sales users can queue workflows.</p>
           )}
-          {message && <p className="text-sm text-slate-300">{message}</p>}
+          {message && (
+            <p className={`text-sm ${messageType === 'success' ? 'text-emerald-300' : 'text-rose-300'}`}>{message}</p>
+          )}
           <p className="text-xs text-slate-500">Admin and sales users can queue workflows; admin approval may be required later.</p>
         </form>
       </section>
