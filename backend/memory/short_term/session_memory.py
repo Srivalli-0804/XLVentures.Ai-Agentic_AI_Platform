@@ -1,7 +1,7 @@
 """
 Session Memory
 
-Stores workflow-specific runtime data in Redis.
+Stores workflow-specific runtime data.
 """
 
 from __future__ import annotations
@@ -13,9 +13,7 @@ from backend.memory.short_term.redis_cache import redis_cache
 
 class SessionMemory:
     """
-    Short-term memory backed by Redis.
-
-    Stores temporary workflow execution data.
+    Short-term workflow memory.
     """
 
     PREFIX = "workflow"
@@ -29,11 +27,6 @@ class SessionMemory:
         data: dict[str, Any],
         ttl: int = 3600,
     ) -> None:
-        """
-        Save workflow state.
-
-        Default TTL = 1 hour.
-        """
         redis_cache.set(
             self._key(workflow_id),
             data,
@@ -44,28 +37,25 @@ class SessionMemory:
         self,
         workflow_id: str,
     ) -> dict[str, Any] | None:
-        """
-        Load workflow state.
-        """
-        return redis_cache.get(self._key(workflow_id))
+        return redis_cache.get(
+            self._key(workflow_id)
+        )
 
     def delete(
         self,
         workflow_id: str,
     ) -> None:
-        """
-        Delete workflow state.
-        """
-        redis_cache.delete(self._key(workflow_id))
+        redis_cache.delete(
+            self._key(workflow_id)
+        )
 
     def exists(
         self,
         workflow_id: str,
     ) -> bool:
-        """
-        Check whether workflow state exists.
-        """
-        return redis_cache.exists(self._key(workflow_id))
+        return redis_cache.exists(
+            self._key(workflow_id)
+        )
 
 
 session_memory = SessionMemory()

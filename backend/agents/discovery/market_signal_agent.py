@@ -8,16 +8,7 @@ from ..base.agent_context import AgentContext
 
 class MarketSignalAgent(BaseAgent):
     """
-    Analyzes discovered companies and generates
-    market signals that will be used during
-    qualification.
-
-    Future implementations will integrate with:
-        - Google News
-        - Crunchbase
-        - RSS Feeds
-        - Company Blogs
-        - LinkedIn
+    Generates market signals for discovered companies.
     """
 
     def __init__(self) -> None:
@@ -44,15 +35,32 @@ class MarketSignalAgent(BaseAgent):
 
         for company in context.discovered_companies:
 
+            base_score = company.get("score", 70)
+
+            # Convert discovery score into confidence
+            confidence = round(base_score / 100, 2)
+
+            if base_score >= 90:
+                signal_type = "Funding"
+                strength = "Very High"
+
+            elif base_score >= 80:
+                signal_type = "Expansion"
+                strength = "High"
+
+            else:
+                signal_type = "Hiring"
+                strength = "Medium"
+
             signal = {
                 "company_id": company["company_id"],
                 "company_name": company["name"],
-                "signal_type": "Hiring",
-                "signal_strength": "High",
-                "confidence_score": 0.92,
+                "signal_type": signal_type,
+                "signal_strength": strength,
+                "confidence_score": confidence,
                 "summary": (
-                    f"{company['name']} appears to match "
-                    "configured business triggers."
+                    f"{company['name']} shows "
+                    f"{signal_type.lower()} signals."
                 ),
             }
 

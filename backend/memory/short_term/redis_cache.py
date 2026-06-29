@@ -1,30 +1,23 @@
 """
-Redis Cache Manager
+In-Memory Cache Manager
 
-Provides a thin abstraction over Redis for caching and
-short-term workflow memory.
+Acts as a drop-in replacement for Redis during local
+development and hackathons.
 """
 
 from __future__ import annotations
 
-import json
 from typing import Any
-
-import redis
-
-from backend.core.settings import settings
 
 
 class RedisCache:
     """
-    Wrapper around Redis client.
+    Simple in-memory cache implementing the same interface
+    as the Redis wrapper.
     """
 
     def __init__(self) -> None:
-        self.client = redis.Redis.from_url(
-            settings.REDIS_URL,
-            decode_responses=True,
-        )
+        self._store: dict[str, Any] = {}
 
     def set(
         self,
@@ -32,43 +25,29 @@ class RedisCache:
         value: Any,
         expire_seconds: int | None = None,
     ) -> None:
-        """
-        Store a value in Redis.
-        """
-        self.client.set(
-            key,
-            json.dumps(value),
-            ex=expire_seconds,
-        )
+        # expire_seconds ignored for local memory
+        self._store[key] = value
 
-    def get(self, key: str) -> Any | None:
-        """
-        Retrieve a value from Redis.
-        """
-        value = self.client.get(key)
+    def get(
+        self,
+        key: str,
+    ) -> Any | None:
+        return self._store.get(key)
 
-        if value is None:
-            return None
+    def delete(
+        self,
+        key: str,
+    ) -> None:
+        self._store.pop(key, None)
 
-        return json.loads(value)
-
-    def delete(self, key: str) -> None:
-        """
-        Delete a key.
-        """
-        self.client.delete(key)
-
-    def exists(self, key: str) -> bool:
-        """
-        Check whether a key exists.
-        """
-        return bool(self.client.exists(key))
+    def exists(
+        self,
+        key: str,
+    ) -> bool:
+        return key in self._store
 
     def clear(self) -> None:
-        """
-        Flush the Redis database.
-        """
-        self.client.flushdb()
+        self._store.clear()
 
 
 redis_cache = RedisCache()

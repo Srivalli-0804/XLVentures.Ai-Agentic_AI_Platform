@@ -34,31 +34,41 @@ class CompanyDiscoveryAgent(BaseAgent):
     async def _run(
         self,
         context: AgentContext,
-    ) -> AgentContext:
+        ) -> AgentContext:
 
-        discovered_companies: List[Dict[str, Any]] = []
+        industry = context.icp.get("industry", "SaaS")
+        location = context.icp.get("location", "United States")
 
-        industry = context.icp.get("industry", "Unknown")
-        location = context.icp.get("location", "Unknown")
-
-        trigger_events = context.metadata.get(
-            "trigger_events",
-            [],
+        context.discovered_companies = [
+        {
+            "company_id": "CMP-001",
+            "name": "Company 1",
+            "industry": industry,
+            "location": location,
+            "status": "DISCOVERED",
+            "score": 76,
+        },
+        {
+            "company_id": "CMP-002",
+            "name": "Company 2",
+            "industry": industry,
+            "location": location,
+            "status": "DISCOVERED",
+            "score": 82,
+        },
+        {
+            "company_id": "CMP-003",
+            "name": "Company 3",
+            "industry": industry,
+            "location": location,
+            "status": "DISCOVERED",
+            "score": 91,
+        },
+]
+        context.add_execution_step(
+            self.name,
+            "SUCCESS",
+            "company_discovery",
         )
-
-        for index, event in enumerate(trigger_events, start=1):
-
-            discovered_companies.append(
-                {
-                    "company_id": f"CMP-{index:03}",
-                    "name": f"Company {index}",
-                    "industry": industry,
-                    "location": location,
-                    "trigger": event["trigger"],
-                    "status": "DISCOVERED",
-                }
-            )
-
-        context.discovered_companies = discovered_companies
 
         return context

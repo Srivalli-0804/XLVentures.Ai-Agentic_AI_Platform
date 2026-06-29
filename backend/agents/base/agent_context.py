@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional
 from uuid import uuid4
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel ,ConfigDict,Field
 
 
 class AgentContext(BaseModel):
@@ -127,5 +127,6 @@ class AgentContext(BaseModel):
 
         return self.shared_memory.get(key, default)
 
-    class Config:
-        arbitrary_types_allowed = True
+    model_config = ConfigDict(
+        arbitrary_types_allowed=True
+    )

@@ -7,15 +7,6 @@ from ..base.agent_context import AgentContext
 
 
 class ContactDiscoveryAgent(BaseAgent):
-    """
-    Discovers key decision-makers for enriched companies.
-
-    Future implementation will integrate with:
-        - LinkedIn
-        - Apollo
-        - Hunter
-        - Proxycurl
-    """
 
     DEFAULT_PERSONAS = [
         "CEO",
@@ -60,19 +51,13 @@ class ContactDiscoveryAgent(BaseAgent):
 
                 contacts.append(
                     {
-                        "contact_id": (
-                            f"{company['company_id']}-"
-                            f"CONTACT-{index:02}"
-                        ),
+                        "contact_id": f"{company['company_id']}-CONTACT-{index:02}",
                         "company_id": company["company_id"],
                         "company_name": company["company_name"],
-                        "name": (
-                            f"{first_name} "
-                            f"{company['company_name']}"
-                        ),
+                        "name": f"{first_name} {company['company_name']}",
                         "designation": persona,
-                        "email": None,
-                        "phone": None,
+                        "email": f"{first_name.lower()}@{company['company_name'].lower().replace(' ','')}.com",
+                        "phone": "+919999999999",
                         "linkedin": None,
                         "status": "DISCOVERED",
                     }

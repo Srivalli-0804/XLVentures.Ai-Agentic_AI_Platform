@@ -1,8 +1,8 @@
-from agents.base.agent_registry import AgentRegistry
+from backend.agents.base.agent_registry import AgentRegistry
 
-from agents.discovery.trigger_monitor_agent import TriggerMonitorAgent
-from agents.discovery.company_discovery_agent import CompanyDiscoveryAgent
-from agents.discovery.market_signal_agent import MarketSignalAgent
+from backend.agents.discovery.trigger_monitor_agent import TriggerMonitorAgent
+from backend.agents.discovery.company_discovery_agent import CompanyDiscoveryAgent
+from backend.agents.discovery.market_signal_agent import MarketSignalAgent
 import sys
 from pathlib import Path
 

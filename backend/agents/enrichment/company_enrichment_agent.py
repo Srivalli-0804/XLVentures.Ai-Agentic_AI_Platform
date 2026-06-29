@@ -47,6 +47,7 @@ class CompanyEnrichmentAgent(BaseAgent):
                 "company_name": company["name"],
                 "industry": company["industry"],
                 "location": company["location"],
+                "prospect_score": company.get("prospect_score", 0),
                 "website": f"https://{company['name'].lower().replace(' ', '')}.com",
                 "employee_count": 250,
                 "funding_stage": "Series A",

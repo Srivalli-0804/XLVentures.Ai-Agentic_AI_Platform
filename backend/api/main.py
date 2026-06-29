@@ -12,7 +12,7 @@ from backend.core.settings import settings
 # Import routers
 # Uncomment these as you implement them.
 from backend.api.routes.workflow_routes import router as workflow_router
-# from backend.api.routes.prospect_routes import router as prospect_router
+from backend.api.routes.prospect_routes import router as prospect_router
 from backend.api.routes.configuration_routes import router as configuration_router
 # from backend.api.routes.analytics_routes import router as analytics_router
 # from backend.api.routes.hitl_routes import router as hitl_router
@@ -78,9 +78,9 @@ async def health():
 
 # Uncomment these as they are implemented.
 #
-app.include_router(workflow_router, prefix="/api/workflows", tags=["Workflows"])
-# app.include_router(prospect_router, prefix="/api/prospects", tags=["Prospects"])
-app.include_router(configuration_router, prefix="/api/config", tags=["Configuration"])
+app.include_router(workflow_router, prefix="/api")
+app.include_router(prospect_router, prefix="/api")
+app.include_router(configuration_router, prefix="/api")
 # app.include_router(analytics_router, prefix="/api/analytics", tags=["Analytics"])
 # app.include_router(hitl_router, prefix="/api/approvals", tags=["Approvals"])
 # app.include_router(websocket_router)
