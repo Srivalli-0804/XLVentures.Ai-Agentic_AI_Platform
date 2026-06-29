@@ -8,12 +8,13 @@ router = APIRouter(
 )
 
 
-@router.get("/{workflow_id}")
-def get_prospects(workflow_id: str):
+@router.get("")
+def get_prospects(workflow_id: str | None = None):
     """
     Return all pipeline stages for the dashboard.
     """
 
+    workflow_id = workflow_id or "demo-workflow"
     workflow = session_memory.load(workflow_id)
 
     if workflow is None:
@@ -23,88 +24,66 @@ def get_prospects(workflow_id: str):
         )
 
     context = workflow.get("context", {})
-
     prospects = []
 
-    # ----------------------------------
-    # Discovered
-    # ----------------------------------
-
     for company in context.get("discovered_companies", []):
-
         prospects.append(
             {
-                "id": company.get("company_id"),
-                "company": company.get("name"),
-                "stage": "Discovered",
+                "id": company.get("company_id", "demo-1"),
+                "company_name": company.get("name", "Demo Company"),
+                "status": "Discovered",
                 "score": company.get("score", 0),
+                "industry": company.get("industry", "Unknown"),
             }
         )
-
-    # ----------------------------------
-    # Qualified
-    # ----------------------------------
 
     for company in context.get("qualified_companies", []):
-
         prospects.append(
             {
-                "id": company.get("company_id"),
-                "company": company.get("name"),
-                "stage": "Qualified",
-                "score": company.get(
-                    "prospect_score",
-                    company.get("score", 0),
-                ),
+                "id": company.get("company_id", "demo-2"),
+                "company_name": company.get("name", "Qualified Company"),
+                "status": "Qualified",
+                "score": company.get("prospect_score", company.get("score", 0)),
+                "industry": company.get("industry", "Unknown"),
             }
         )
-
-    # ----------------------------------
-    # Enriched
-    # ----------------------------------
 
     for company in context.get("company_profiles", []):
-
         prospects.append(
             {
-                "id": company.get("company_id"),
-                "company": company.get("company_name"),
-                "stage": "Enriched",
-                "score": company.get(
-                    "prospect_score",
-                    0,
-                ),
+                "id": company.get("company_id", "demo-3"),
+                "company_name": company.get("company_name", "Enriched Company"),
+                "status": "Enriched",
+                "score": company.get("prospect_score", 0),
+                "industry": company.get("industry", "Unknown"),
             }
         )
-
-    # ----------------------------------
-    # Recommended
-    # ----------------------------------
 
     seen = set()
 
     for recommendation in context.get("recommendations", []):
-
         company_id = recommendation.get("company_id")
-
         if company_id in seen:
             continue
 
         seen.add(company_id)
-
         prospects.append(
             {
                 "id": company_id,
-                "company": recommendation.get("company_name"),
-                "stage": "Recommended",
-                "score": recommendation.get(
-                    "prospect_score",
-                    0,
-                ),
+                "company_name": recommendation.get("company_name", "Recommended Company"),
+                "status": "Recommended",
+                "score": recommendation.get("prospect_score", 0),
+                "industry": recommendation.get("industry", "Unknown"),
             }
         )
 
     return prospects
+
+
+@router.get("/{workflow_id}")
+def get_prospects_for_workflow(workflow_id: str):
+    return get_prospects(workflow_id)
+
 
 @router.get("/{workflow_id}/{company_id}")
 def get_company_details(
@@ -124,30 +103,17 @@ def get_company_details(
         )
 
     context = workflow.get("context", {})
-
-    # Search qualified companies first
-    companies = context.get("qualified_companies", [])
-
-    if not companies:
-        companies = context.get("discovered_companies", [])
+    companies = context.get("qualified_companies", []) or context.get("discovered_companies", [])
 
     for company in companies:
-
         if company.get("company_id") == company_id:
-
             return {
                 "company_id": company.get("company_id"),
                 "name": company.get("name"),
                 "industry": company.get("industry"),
                 "location": company.get("location"),
-                "status": company.get(
-                    "qualification_status",
-                    company.get("status"),
-                ),
-                "prospect_score": company.get(
-                    "prospect_score",
-                    company.get("score", 0),
-                ),
+                "status": company.get("qualification_status", company.get("status")),
+                "prospect_score": company.get("prospect_score", company.get("score", 0)),
                 "market_signal": company.get("market_signal"),
             }
 

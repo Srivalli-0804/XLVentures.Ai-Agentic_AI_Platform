@@ -14,26 +14,13 @@ interface Props {
 
 const ProspectCard: React.FC<Props> = ({ prospect }) => {
   return (
-    <div className="bg-white rounded-lg shadow-md p-4 border">
-      <div className="flex justify-between items-center">
-        <h3 className="font-semibold text-lg">
-          {prospect.company_name}
-        </h3>
-
-        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded">
-          {prospect.score}
-        </span>
+    <div className="prospect-card">
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 8 }}>
+        <h4 style={{ margin: 0 }}>{prospect.company_name}</h4>
+        <span className="badge badge-live">{prospect.score}</span>
       </div>
-
-      <p className="text-gray-600 mt-2">
-        {prospect.industry}
-      </p>
-
-      <div className="mt-3">
-        <span className="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm">
-          {prospect.status}
-        </span>
-      </div>
+      <p className="muted small" style={{ margin: "8px 0 10px" }}>{prospect.industry}</p>
+      <span className="badge badge-queued">{prospect.status}</span>
     </div>
   );
 };

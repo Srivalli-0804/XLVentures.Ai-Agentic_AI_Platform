@@ -5,38 +5,31 @@ export interface AgentTrace {
   agent_name: string;
   action: string;
   result: string;
+  timestamp?: string;
 }
 
 interface Props {
   traces: AgentTrace[];
 }
 
-const AgentTracePanel: React.FC<Props> = ({
-  traces
-}) => {
+const AgentTracePanel: React.FC<Props> = ({ traces }) => {
   return (
-    <div className="bg-white rounded-lg shadow p-4">
-      <h2 className="text-xl font-bold mb-4">
-        Agent Trace
-      </h2>
-
-      <div className="space-y-3">
+    <div className="card">
+      <div className="hero-row">
+        <div>
+          <h2 style={{ margin: 0 }}>Agent trace</h2>
+          <p className="muted small">Detailed reasoning and outcomes for each AI agent.</p>
+        </div>
+      </div>
+      <div>
         {traces.map((trace) => (
-          <div
-            key={trace.id}
-            className="border rounded p-3"
-          >
-            <h3 className="font-semibold">
-              {trace.agent_name}
-            </h3>
-
-            <p className="text-sm">
-              {trace.action}
-            </p>
-
-            <p className="text-green-600 text-sm mt-1">
-              {trace.result}
-            </p>
+          <div key={trace.id} className="trace-item">
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <h3 style={{ margin: 0 }}>{trace.agent_name}</h3>
+              <span className="badge badge-live">{trace.result}</span>
+            </div>
+            <p className="muted small" style={{ margin: "8px 0 4px" }}>{trace.action}</p>
+            <div className="small muted">{trace.timestamp || "Just now"}</div>
           </div>
         ))}
       </div>
